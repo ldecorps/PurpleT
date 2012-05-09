@@ -25,7 +25,7 @@ public class GameTest
 
 	@Test public void gameStartsWithPlayerOne()
 	{
-		assertThat(cut.getCurrentPlayer(), is(Game.getPlayer1()));
+		assertThat(cut.getCurrentPlayer(), is(cut.getPlayer1()));
 	}
 
 	@Test public void playersPlayInTurn() throws TicTacToeInputException
@@ -41,7 +41,7 @@ public class GameTest
 		addInputs(TOP_LEFT, MIDDLE_LEFT, TOP_CENTER, MIDDLE_CENTER);
 		assertFalse("the top row is not finished", cut.isThereaWinner());
 		Cell winnerCell = TOP_RIGHT;
-		winnerCell.setPlayer(Game.getPlayer1());
+		winnerCell.setPlayer(cut.getPlayer1());
 		cut.addInput(winnerCell);
 		assertTrue("the top row is from the same user", cut.isThereaWinner());
 	}

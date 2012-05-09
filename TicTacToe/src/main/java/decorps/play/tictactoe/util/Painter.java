@@ -2,7 +2,6 @@ package decorps.play.tictactoe.util;
 
 import decorps.play.tictactoe.core.Board;
 import decorps.play.tictactoe.core.Cell;
-import decorps.play.tictactoe.core.Game;
 
 public class Painter
 {
@@ -34,8 +33,9 @@ public class Painter
 			int bufferPosition = mapCellPositionToBufferPosition(cell);
 			builder = builder
 					.replace(bufferPosition, bufferPosition + 1,
-							String.valueOf(Game.getPlayer1() == cell
-									.getPlayer() ? player1Marker
+							String.valueOf(null != cell
+									.getPlayer() && cell
+									.getPlayer().isFirstPlayer() ? player1Marker
 									: player2Marker));
 		}
 		return builder;

@@ -98,7 +98,7 @@ public class TicTacToeDriver
 			Main main = new Main(cut,
 					new BufferedReader(new StringReader("0")), System.out);
 			main.run();
-			if (Game.player2 == main.getWinner())
+			if (cut.game.player2 == main.getWinner())
 			{
 				player2Wins++;
 			}

@@ -11,10 +11,21 @@ import decorps.play.tictactoe.util.TicTacToeInputException;
 public class Board
 {
 	final public List<Cell> cellInputs = new ArrayList<Cell>(
-			Game.MAX_NUMBER_OF_TURNS);
+			Game.BOARD_SIZE);
 	Player winner = Player.NOBODY;
 	Painter painter = new Painter();
 	final Random r = new Random();
+	private Player currentPlayer;
+	
+	public void setCurrentPlayer(Player currentPlayer)
+	{
+		this.currentPlayer = currentPlayer;
+	}
+	
+	public Player getCurrentPlayer()
+	{
+		return currentPlayer;
+	}
 	
 	public void newGame()
 	{
@@ -171,7 +182,7 @@ public class Board
 	List<Cell> getAvailableCells()
 	{
 		final List<Cell> allCells = new ArrayList<Cell>(
-				Game.MAX_NUMBER_OF_TURNS);
+				Game.BOARD_SIZE);
 
 		for (int row = 0; row < 3; row++)
 		{
@@ -213,8 +224,8 @@ public class Board
 	public Cell nextBestCell(Game game)
 	{
 		Cell nextCell = Cell.NULL_CELL;
-		final boolean isFirstGo = game.board.getAvailableCells().size() == Game.MAX_NUMBER_OF_TURNS;
-		final boolean isSecondGo = game.board.getAvailableCells().size() == Game.MAX_NUMBER_OF_TURNS - 1;
+		final boolean isFirstGo = game.board.getAvailableCells().size() == Game.BOARD_SIZE;
+		final boolean isSecondGo = game.board.getAvailableCells().size() == Game.BOARD_SIZE - 1;
 		if (isFirstGo || isSecondGo)
 		{
 			nextCell = pickOneCellAtRandom();

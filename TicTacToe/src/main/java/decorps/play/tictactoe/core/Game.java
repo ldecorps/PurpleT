@@ -8,31 +8,30 @@ import decorps.play.tictactoe.util.TicTacToeInputException;
 
 public class Game
 {
-	private static Player player1;
-	static Player player2;
-	private Player currentPlayer;
+	private Player player1;
+	 Player player2;
 	final Board board = new Board();
-	public static final int MAX_NUMBER_OF_TURNS = 9;
+	public static final int BOARD_SIZE = 9;
 	final InputParser inputParser = new InputParser(this);
 
 	Game(Player player1, Player player2)
 	{
-		Game.setPlayer1(player1);
-		Game.player2 = player2;
-		setCurrentPlayer(Game.getPlayer1());
+		this.player1 = player1;
+		this.player2 = player2;
+		board.setCurrentPlayer(this.player1);
 	}
 
 	public static Game buildComputerGame()
 	{
-		Game game = new Game(new ComputerPlayer("Computer 1"),
+		Game game = new Game(new ComputerPlayer("Computer 1").setFirstPlayer(),
 				new ComputerPlayer("Computer 2"));
 		return game;
 	}
 
 	public void addOneHuman(String playerName)
 	{
-		player1 = new HumanPlayer(playerName);
-		currentPlayer = player1;
+		player1 = new HumanPlayer(playerName).setFirstPlayer();
+		board.setCurrentPlayer(player1);
 		player2 = new ComputerPlayer("Computer");
 	}
 
@@ -86,22 +85,22 @@ public class Game
 
 	public Player getCurrentPlayer()
 	{
-		return currentPlayer;
+		return board.getCurrentPlayer();
 	}
 
 	public void setCurrentPlayer(Player currentPlayer)
 	{
-		this.currentPlayer = currentPlayer;
+		board.setCurrentPlayer(currentPlayer);
 	}
 
-	public static Player getPlayer1()
+	public Player getPlayer1()
 	{
 		return player1;
 	}
 
-	public static void setPlayer1(Player player1)
+	public void setPlayer1(Player player1)
 	{
-		Game.player1 = player1;
+		this.player1 = player1;
 	}
 
 	public Cell nextBestCell()
@@ -112,7 +111,7 @@ public class Game
 	public void newGame() 
 	{
 		board.newGame();
-		currentPlayer = player1;
+		board.setCurrentPlayer(player1);
 	}
 
 }

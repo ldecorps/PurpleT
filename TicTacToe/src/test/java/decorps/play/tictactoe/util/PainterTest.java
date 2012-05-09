@@ -8,7 +8,6 @@ import org.junit.Test;
 
 import decorps.play.tictactoe.core.Board;
 import decorps.play.tictactoe.core.Cell;
-import decorps.play.tictactoe.core.Game;
 
 public class PainterTest
 {
@@ -18,12 +17,12 @@ public class PainterTest
 	@Test public void mapCellPositionToBufferPosition()
 			throws TicTacToeInputException
 	{
-		board.add(Cell.TOP_LEFT.setPlayer(Game.getPlayer1()));
-		board.add(Cell.MIDDLE_CENTER.setPlayer(Game.getPlayer1()));
-		board.add(Cell.BOTTOM_RIGHT.setPlayer(Game.getPlayer1()));
+		board.add(Cell.TOP_LEFT.setPlayer(board.getCurrentPlayer()));
+		board.add(Cell.MIDDLE_CENTER.setPlayer(board.getCurrentPlayer()));
+		board.add(Cell.BOTTOM_RIGHT.setPlayer(board.getCurrentPlayer()));
 		assertThat(
 				cut.drow(board),
-				allOf(containsString("|O| | |"), containsString("| |O| |"),
-						containsString("| | |O|")));
+				allOf(containsString("|X| | |"), containsString("| |X| |"),
+						containsString("| | |X|")));
 	}
 }
