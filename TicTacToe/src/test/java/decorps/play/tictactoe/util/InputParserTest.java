@@ -14,8 +14,6 @@ import org.junit.Test;
 
 import decorps.play.tictactoe.core.Cell;
 import decorps.play.tictactoe.core.Game;
-import decorps.play.tictactoe.util.InputParser;
-import decorps.play.tictactoe.util.TicTacToeInputException;
 
 public class InputParserTest
 {

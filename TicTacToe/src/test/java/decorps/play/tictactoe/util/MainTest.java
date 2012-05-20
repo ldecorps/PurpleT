@@ -17,8 +17,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import decorps.play.tictactoe.core.TicTacToe;
-import decorps.play.tictactoe.util.Command;
-import decorps.play.tictactoe.util.Main;
 
 @RunWith(JMock.class)
 public class MainTest

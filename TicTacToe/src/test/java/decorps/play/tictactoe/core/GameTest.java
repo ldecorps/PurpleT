@@ -14,8 +14,6 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import decorps.play.tictactoe.core.Cell;
-import decorps.play.tictactoe.core.Game;
 import decorps.play.tictactoe.util.Player;
 import decorps.play.tictactoe.util.TicTacToeInputException;
 
@@ -58,7 +56,6 @@ public class GameTest
 		}
 		catch (TicTacToeInputException tttie)
 		{
-
 		}
 
 	}
