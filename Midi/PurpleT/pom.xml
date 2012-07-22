@@ -1,0 +1,97 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.decorps.purple</groupId>
+  <artifactId>PurpleT</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>PurpleT</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+<dependencies>s
+		<dependency>
+			<groupId>org.fitnesse</groupId>
+			<artifactId>fitnesse</artifactId>
+			<version>20111025</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-core</artifactId>
+			<version>1.3.RC2</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.10</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jmock</groupId>
+			<artifactId>jmock-legacy</artifactId>
+			<version>2.6.0-RC2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jmock</groupId>
+			<artifactId>jmock-junit4</artifactId>
+			<version>2.6.0-RC2</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>nl.sijpesteijn.testing.fitnesse.plugins</groupId>
+				<artifactId>mafia-maven-plugin</artifactId>
+				<version>1.0.7</version>
+				<configuration>
+					<port>9090</port>
+					<statics>
+						<static>!define fixturePackage {fitnesse.slim.test}</static>
+					</statics>
+					<resources>
+						<resource>${basedir}/src/main/resources</resource>
+					</resources>
+					<wikiRoot>${basedir}/src/test/resources</wikiRoot>
+					<nameRootPage>FitNesseRoot</nameRootPage>
+					<targets>
+						<target>./classes</target>
+					</targets>
+					<excludeDependencies>
+						<dependency>
+							<artifactId>log4j</artifactId>
+							<groupId>log4j</groupId>
+							<version>1.2.15</version>
+						</dependency>
+					</excludeDependencies>
+					<stopTestsOnFailure>true</stopTestsOnFailure>
+					<stopTestsOnException>true</stopTestsOnException>
+					<stopTestsOnWrong>true</stopTestsOnWrong>
+					<stopTestsOnIgnore>false</stopTestsOnIgnore>
+					<suites>
+						<suite>PurpleT</suite>
+					</suites>
+				</configuration>
+				<executions>
+					<execution>
+						<id>default-test</id>
+						<goals>
+							<goal>test</goal>
+						</goals>
+						<phase>integration-test</phase>
+					</execution>
+					<execution>
+						<id>default-report</id>
+						<goals>
+							<goal>report</goal>
+						</goals>
+						<phase>site</phase>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
