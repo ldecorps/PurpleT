@@ -1,0 +1,4 @@
+One device is connected to the computer and we just try to connect to it.
+
+|script|Midi Connector|
+|connect              |
