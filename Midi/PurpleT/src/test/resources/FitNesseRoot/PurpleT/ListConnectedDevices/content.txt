@@ -1,0 +1,27 @@
+|scenario|send note on _ _ _|note, velocity, channel                                   |
+|send a  |midi note on      |on channel|@channel|for note|@note|with velocity|@velocity|
+
+|scenario    |tested midi device is connected|
+|register IN |KBD/KNOB                       |
+|register OUT|SOUND                          |
+
+#-|script|Midi Connector Factory Driver|
+#|show      |list Midi Devices             |
+#|tested midi device is connected          |
+#|link remote transmitter to local receiver|
+#|show      |listen for some messages      |
+#|close                                    |
+
+-|script|Midi Connector Factory Driver|
+|show          |list Midi Devices         |
+|tested midi device is connected          |
+|link local transmitter to remote receiver|
+|send note on 72 93 1                     |
+|close                                    |
+
+#|script|Midi Connector Factory Driver|
+#|do it                               |
+
+#|try Midi Device Getter                  |
+
+#|midi handler|
