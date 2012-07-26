@@ -1,2 +1,2 @@
 -|script|Midi Connector Factory Driver|
-|show|list Midi Devices|
+|close|

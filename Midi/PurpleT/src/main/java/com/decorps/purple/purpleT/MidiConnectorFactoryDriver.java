@@ -25,24 +25,31 @@ public class MidiConnectorFactoryDriver {
 	Transmitter localTransmitter = null;
 	Receiver remoteReceiver = null;
 	Synthesizer synthesizer = null;
-	MidiDevice OUT = null;
-	MidiDevice IN = null;
+	static MidiDevice OUT = null;
+	static MidiDevice IN = null;
 	ByteArrayOutputStream pipeOut = new ByteArrayOutputStream();
 	PrintStream new_out = new PrintStream(pipeOut);
 	PrintStream old_out = System.out;
+
+	public static Object wait = new Object();
 
 	public MidiConnectorFactoryDriver() {
 
 	}
 
-	public void sendAOnChannelForNoteWithVelocity(final String command,
-			final int channel, final int note, final int velocity)
+	public void sendAOnChannelForNoteWithVelocityAndDuration(
+			final String command, final int channel, final int note,
+			final int velocity, final int durationMillisec)
 			throws InvalidMidiDataException, InterruptedException {
-		ShortMessage myMsg = new ShortMessage();
-		MidiNote.main(new String[]{OUT.getDeviceInfo().getName(), Integer.toString(note), Integer.toString(velocity), "1000"});
-		myMsg.setMessage(ShortMessage.NOTE_ON, channel - 1, note, velocity);
-		remoteReceiver.send(myMsg, NO_TIMESTAMP);
-		Thread.sleep(1500);
+		ShortMessage noteOn = new ShortMessage();
+		ShortMessage noteOff = new ShortMessage();
+		// MidiNote.main(new String[] { OUT.getDeviceInfo().getName(),
+		// Integer.toString(note), Integer.toString(velocity), "1000" });
+		noteOn.setMessage(ShortMessage.NOTE_ON, channel - 1, note, velocity);
+		noteOff.setMessage(ShortMessage.NOTE_OFF, channel - 1, note, 0);
+		remoteReceiver.send(noteOn, NO_TIMESTAMP);
+		Thread.sleep(durationMillisec);
+		remoteReceiver.send(noteOff, NO_TIMESTAMP);
 	}
 
 	public void registerIN(String midiDeviceName)
@@ -97,7 +104,7 @@ public class MidiConnectorFactoryDriver {
 			throws MidiUnavailableException {
 
 		localTransmitter = selectTransmitterForDevice("Real Time Sequencer");
-		// OUT.open();
+		OUT.open();
 		remoteReceiver = selectReceiverForDevice(OUT.getDeviceInfo().getName());
 		// remoteReceiver = new DumpReceiver(System.out);
 		localTransmitter.setReceiver(remoteReceiver);
@@ -105,8 +112,11 @@ public class MidiConnectorFactoryDriver {
 
 	public String listenForSomeMessages() throws MidiUnavailableException,
 			InterruptedException {
-		IN.open();
-		Thread.sleep(100);
+		synchronized (wait) {
+			IN.open();
+			wait.wait();
+		}
+		IN.close();
 		return new String(pipeOut.toByteArray());
 	}
 
@@ -191,9 +201,6 @@ public class MidiConnectorFactoryDriver {
 			if (!deviceName.equals(midiDevice.getDeviceInfo().getName())) {
 				continue;
 			}
-			// for (final Receiver receiver : midiDevice.getReceivers()) {
-			// return receiver;
-			// }
 			System.out.println(midiDevice.getReceiver() + " was chosen");
 			return midiDevice.getReceiver();
 		}

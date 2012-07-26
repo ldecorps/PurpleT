@@ -112,6 +112,9 @@ public class DumpReceiver implements Receiver {
 			}
 		}
 		m_printStream.println(strTimeStamp + strMessage);
+		synchronized (MidiConnectorFactoryDriver.wait) {
+			MidiConnectorFactoryDriver.wait.notify();
+		}
 	}
 
 	public static String decodeMessage(ShortMessage message) {
