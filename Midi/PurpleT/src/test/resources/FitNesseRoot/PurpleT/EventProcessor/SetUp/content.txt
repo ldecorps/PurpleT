@@ -2,4 +2,4 @@
 |com.decorps.purple.purpleT|
 
 -|script|Midi Connector Factory Driver|
-|tested midi device is connected from  KBD/KNOB to VB-99 CONTROL|
+|tested midi device is connected from KBD/KNOB to VB-99 MIDI|

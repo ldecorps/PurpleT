@@ -43,34 +43,33 @@ public class MidiConnectorFactoryDriver {
 			throws InvalidMidiDataException, InterruptedException {
 		ShortMessage noteOn = new ShortMessage();
 		ShortMessage noteOff = new ShortMessage();
+		// if (false) {
 		// MidiNote.main(new String[] { OUT.getDeviceInfo().getName(),
 		// Integer.toString(note), Integer.toString(velocity), "1000" });
-		noteOn.setMessage(ShortMessage.NOTE_ON, channel - 1, note, velocity);
-		noteOff.setMessage(ShortMessage.NOTE_OFF, channel - 1, note, 0);
-		remoteReceiver.send(noteOn, NO_TIMESTAMP);
-		Thread.sleep(durationMillisec);
-		remoteReceiver.send(noteOff, NO_TIMESTAMP);
+		//
+		// } else
+		{
+			noteOn.setMessage(ShortMessage.NOTE_ON, channel - 1, note, velocity);
+			noteOff.setMessage(ShortMessage.NOTE_OFF, channel - 1, note, 0);
+			remoteReceiver.send(noteOn, NO_TIMESTAMP);
+			Thread.sleep(durationMillisec);
+			remoteReceiver.send(noteOff, NO_TIMESTAMP);
+		}
 	}
 
 	public void registerIN(String midiDeviceName)
 			throws MidiUnavailableException {
-		IN = getByName(midiDeviceName);
+		final MidiDevice.Info info = MidiCommon.getMidiDeviceInfo(
+				midiDeviceName, false);
+		IN = MidiSystem.getMidiDevice(info);
 	}
 
 	public void registerOUT(String midiDeviceName)
 			throws MidiUnavailableException {
-		OUT = getByName(midiDeviceName);
-	}
-
-	private MidiDevice getByName(final String midiDeviceName)
-			throws MidiUnavailableException {
-		for (final MidiDevice.Info info : MidiSystem.getMidiDeviceInfo()) {
-			if (midiDeviceName.equals(info.getName())) {
-				return MidiSystem.getMidiDevice(info);
-			}
-		}
-		throw new MidiUnavailableException("Cannot find midi device "
-				+ midiDeviceName);
+		final MidiDevice.Info info = MidiCommon.getMidiDeviceInfo(
+				midiDeviceName, true);
+		OUT = MidiSystem.getMidiDevice(info);
+		OUT.open();
 	}
 
 	public List<String> listMidiDevices() throws MidiUnavailableException {
@@ -102,8 +101,7 @@ public class MidiConnectorFactoryDriver {
 	public void linkRemoteTransmitterToLocalReceiver()
 			throws MidiUnavailableException {
 
-		remoteTransmitter = selectTransmitterForDevice(IN.getDeviceInfo()
-				.getName());
+		remoteTransmitter = selectTransmitterForDevice(IN);
 		localReceiver = new DumpReceiver(new_out);
 		remoteTransmitter.setReceiver(localReceiver);
 	}
@@ -112,8 +110,7 @@ public class MidiConnectorFactoryDriver {
 			throws MidiUnavailableException {
 
 		localTransmitter = selectTransmitterForDevice("Real Time Sequencer");
-		OUT.open();
-		remoteReceiver = selectReceiverForDevice(OUT.getDeviceInfo().getName());
+		remoteReceiver = selectReceiverForDevice(OUT);
 		// remoteReceiver = new DumpReceiver(System.out);
 		localTransmitter.setReceiver(remoteReceiver);
 	}
@@ -194,7 +191,10 @@ public class MidiConnectorFactoryDriver {
 	public Transmitter selectTransmitterForDevice(final String deviceName)
 			throws MidiUnavailableException {
 		for (final MidiDevice midiDevice : getDevices()) {
-			if (!deviceName.equals(midiDevice.getDeviceInfo().toString())) {
+			final boolean allowsInput = (midiDevice.getMaxTransmitters() != 0);
+			if (!allowsInput
+					|| !deviceName
+							.equals(midiDevice.getDeviceInfo().toString())) {
 				continue;
 			}
 			return midiDevice.getTransmitter();
@@ -203,10 +203,22 @@ public class MidiConnectorFactoryDriver {
 				+ deviceName);
 	}
 
+	public Transmitter selectTransmitterForDevice(final MidiDevice midiDevice)
+			throws MidiUnavailableException {
+		return midiDevice.getTransmitter();
+	}
+
+	public Receiver selectReceiverForDevice(final MidiDevice midiDevice)
+			throws MidiUnavailableException {
+		return midiDevice.getReceiver();
+	}
+
 	public Receiver selectReceiverForDevice(String deviceName)
 			throws MidiUnavailableException {
 		for (final MidiDevice midiDevice : getDevices()) {
-			if (!deviceName.equals(midiDevice.getDeviceInfo().getName())) {
+			final boolean allowsOutput = (midiDevice.getMaxReceivers() != 0);
+			if (!allowsOutput
+					|| !deviceName.equals(midiDevice.getDeviceInfo().getName())) {
 				continue;
 			}
 			System.out.println(midiDevice.getReceiver() + " was chosen");
