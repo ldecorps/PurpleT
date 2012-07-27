@@ -77,16 +77,24 @@ public class MidiConnectorFactoryDriver {
 		final List<String> synthInfos = new ArrayList<String>();
 
 		for (MidiDevice.Info info : MidiSystem.getMidiDeviceInfo()) {
+			String description = "";
 			final MidiDevice device = MidiSystem.getMidiDevice(info);
 			if (device instanceof Synthesizer) {
-				synthInfos.add("Synthesizer: " + info.getName());
+				description = "Synthesizer: " + info.getName();
 			}
 			if (device instanceof Sequencer) {
-				synthInfos.add("Sequencer: " + info.getName());
+				description = "Sequencer: " + info.getName();
 			} else {
-				synthInfos.add(info.getName() + "(" + info.getDescription()
-						+ ")");
+				description = info.getName() + "(" + info.getDescription()
+						+ ")";
 			}
+			boolean bAllowsInput = (device.getMaxTransmitters() != 0);
+			boolean bAllowsOutput = (device.getMaxReceivers() != 0);
+			if (bAllowsInput)
+				description += " for input";
+			if (bAllowsOutput)
+				description += " for output";
+			synthInfos.add(description);
 		}
 		return synthInfos;
 	}
@@ -110,7 +118,7 @@ public class MidiConnectorFactoryDriver {
 		localTransmitter.setReceiver(remoteReceiver);
 	}
 
-	public String listenForSomeMessages() throws MidiUnavailableException,
+	public String listenToOneMessage() throws MidiUnavailableException,
 			InterruptedException {
 		synchronized (wait) {
 			IN.open();

@@ -1,3 +1,3 @@
 -|script|Midi Connector Factory Driver|
 |link remote transmitter to local receiver|
-|show      |listen for some messages      |
+|show        |listen to one message       |
