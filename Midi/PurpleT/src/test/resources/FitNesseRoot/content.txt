@@ -1,0 +1,4 @@
+Jar for FitNesse
+!path /Users/ldecorps/tools/fitnesse.jar
+
+!define TEST_SYSTEM {slim} 

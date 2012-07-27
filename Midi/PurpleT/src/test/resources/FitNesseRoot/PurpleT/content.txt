@@ -7,12 +7,7 @@ http://docs.oracle.com/javase/tutorial/sound/overview-MIDI.html
 
 !path /Users/ldecorps/git/ldecorps/ldecorps/Midi/PurpleT/target/classes
 
-Jar for FitNesse
-!path /Users/ldecorps/tools/fitnesse.jar
-
 Jar which contains the dependencies
 !path /Users/ldecorps/git/ldecorps/ldecorps/Midi/PurpleT/target/PurpleT-*.jar
-
-!define TEST_SYSTEM {slim} 
 
 ***!

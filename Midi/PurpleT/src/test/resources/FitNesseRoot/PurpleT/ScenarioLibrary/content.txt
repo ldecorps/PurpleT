@@ -1,5 +1,5 @@
-|scenario|send note on _ _ _ _|note, velocity, channel, duration                                                |
-|send a  |midi note on        |on channel|@channel|for note|@note|with velocity|@velocity|and duration|@duration|
+|scenario|send note on _ _ _ _|note, velocity, channel, duration                                                             |
+|ensure  |send a              |midi note on|on channel|@channel|for note|@note|with velocity|@velocity|and duration|@duration|
 
 |scenario    |tested midi device is connected from _ to _|in, out|
 |register IN |@in                                                |

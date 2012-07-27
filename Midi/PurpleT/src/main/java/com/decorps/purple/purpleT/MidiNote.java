@@ -43,9 +43,7 @@ import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
-import javax.sound.midi.MidiMessage;
 import javax.sound.midi.ShortMessage;
-import javax.sound.midi.SysexMessage;
 
 // TODO: an optional delay parameter that is added to getMicrosecondPosition to be used as timestamp for the event delivery.
 

@@ -37,24 +37,24 @@ public class MidiConnectorFactoryDriver {
 
 	}
 
-	public void sendAOnChannelForNoteWithVelocityAndDuration(
+	@SuppressWarnings("unused")
+	public boolean sendAOnChannelForNoteWithVelocityAndDuration(
 			final String command, final int channel, final int note,
 			final int velocity, final int durationMillisec)
 			throws InvalidMidiDataException, InterruptedException {
 		ShortMessage noteOn = new ShortMessage();
 		ShortMessage noteOff = new ShortMessage();
-		// if (false) {
-		// MidiNote.main(new String[] { OUT.getDeviceInfo().getName(),
-		// Integer.toString(note), Integer.toString(velocity), "1000" });
-		//
-		// } else
-		{
+		if (false) {
+			MidiNote.main(new String[] { OUT.getDeviceInfo().getName(),
+					Integer.toString(note), Integer.toString(velocity), "1000" });
+		} else {
 			noteOn.setMessage(ShortMessage.NOTE_ON, channel - 1, note, velocity);
 			noteOff.setMessage(ShortMessage.NOTE_OFF, channel - 1, note, 0);
 			remoteReceiver.send(noteOn, NO_TIMESTAMP);
 			Thread.sleep(durationMillisec);
 			remoteReceiver.send(noteOff, NO_TIMESTAMP);
 		}
+		return true;
 	}
 
 	public void registerIN(String midiDeviceName)
@@ -117,8 +117,8 @@ public class MidiConnectorFactoryDriver {
 
 	public String listenToOneMessage() throws MidiUnavailableException,
 			InterruptedException {
+		IN.open();
 		synchronized (wait) {
-			IN.open();
 			wait.wait();
 		}
 		IN.close();
